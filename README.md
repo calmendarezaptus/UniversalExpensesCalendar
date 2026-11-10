@@ -24,7 +24,7 @@ tema por omisión es **Turquesa** para distinguirlo del de tiempos (Índigo qued
 |---|---|
 | `organization_id` | **Requerido.** Sin él se muestra un error. |
 
-## Llamadas al backend (función `time_entry_services`)
+## Llamadas al backend (función `expense_services`, proyecto Gastos)
 
 | Método | Ruta | Para qué |
 |---|---|---|
@@ -40,10 +40,10 @@ de tiempos un 404 se tomaba como éxito).
 
 | Variable | Por omisión |
 |---|---|
-| `VITE_TIME_ENTRY_API_BASE_URL` | Función `time_entry_services` del entorno development |
+| `VITE_API_BASE_URL` | URL de `expense_services`. **Transitorio:** mientras no exista, el respaldo es `time_entry_services`, que aún tiene las rutas de gastos |
 | `VITE_EXPENSE_ENTRY_URL` | `https://universal-aptus-expenseentry.onslate.com/` |
 
-En desarrollo todas las llamadas pasan por el proxy de Vite `/api/time-entry`.
+En desarrollo todas las llamadas pasan por el proxy de Vite `/api`.
 
 **CORS:** el dominio de esta Slate debe estar en los dominios autorizados del proyecto de Catalyst
 de la función, igual que el de la captura.
@@ -56,3 +56,7 @@ npm run dev      # servidor de desarrollo
 npm test         # pruebas de src/lib y src/types (node:test)
 npm run build    # compilación para la Slate (dist/)
 ```
+
+## Proyecto
+
+Forma parte del proyecto de Catalyst **Gastos**. Configuración, despliegue y pendientes: `02-gastos/PROYECTO.md` en el repositorio de trabajo `AptusWidgets`.

@@ -1,9 +1,13 @@
 import type { Expense } from '../types'
 
-// Desarrollo usa el proxy de Vite (mismo origen); producción usa la URL configurada.
+// Función del proyecto Gastos: expense_services. Desarrollo usa el proxy de Vite (mismo origen).
+// TRANSITORIO: mientras no exista la URL de expense_services, el respaldo es time_entry_services,
+// que aún conserva las rutas de gastos. Reemplazar FALLBACK_API al desplegar la función nueva
+// (o definir VITE_API_BASE_URL en la Slate).
+const FALLBACK_API = 'https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services'
 export const API_BASE = import.meta.env.DEV
-  ? '/api/time-entry'
-  : (import.meta.env.VITE_TIME_ENTRY_API_BASE_URL || 'https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services').replace(/\/$/, '')
+  ? '/api'
+  : (import.meta.env.VITE_API_BASE_URL || FALLBACK_API).replace(/\/$/, '')
 
 // Slate de captura de gastos (Agregar / Editar).
 export const ENTRY_URL = import.meta.env.VITE_EXPENSE_ENTRY_URL || 'https://universal-aptus-expenseentry.onslate.com/'
@@ -42,6 +46,6 @@ export async function deleteExpense(orgId: string, gastoId: number): Promise<Del
   if (response.ok) return { ok: true, alreadyGone: false }
   // Solo un 404 en JSON de la API significa "ya no existe". Un 404 en HTML es una ruta no desplegada.
   if (response.status === 404 && data && typeof data.error === 'string' && data.stage) return { ok: true, alreadyGone: true }
-  if (response.status === 404 && !data) return { ok: false, message: 'La función de Catalyst no tiene la ruta para eliminar gastos (HTTP 404). Despliega la versión actual de time_entry_services.' }
+  if (response.status === 404) return { ok: false, message: 'La función de Catalyst no tiene la ruta para eliminar gastos (HTTP 404). Despliega la versión actual de expense_services.' }
   return { ok: false, message: data?.error || `No se pudo eliminar el gasto (HTTP ${response.status}).` }
 }

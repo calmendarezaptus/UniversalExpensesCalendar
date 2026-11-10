@@ -8,7 +8,7 @@ const read = file => fs.readFileSync(new URL(file, import.meta.url), 'utf8')
 const types = await import(toModule(read('../src/types.ts')))
 const api = await import(toModule(read('../src/lib/api.ts')
   .replace('import.meta.env.DEV', 'true')
-  .replace('import.meta.env.VITE_TIME_ENTRY_API_BASE_URL', 'undefined')
+  .replace('import.meta.env.VITE_API_BASE_URL', 'undefined')
   .replace('import.meta.env.VITE_EXPENSE_ENTRY_URL', 'undefined')))
 
 const json = (status, body) => ({ ok: status >= 200 && status < 300, status, json: async () => { if (body === undefined) throw new Error('html'); return body } })
@@ -17,7 +17,7 @@ test('borrar: éxito y "ya no existe" (404 JSON de la API) quitan el gasto', asy
   let call
   globalThis.fetch = async (url, options) => { call = { url, options }; return json(200, { ok: true }) }
   assert.deepEqual(await api.deleteExpense('636939444', 31), { ok: true, alreadyGone: false })
-  assert.equal(call.url, '/api/time-entry/636939444/gastos/31'); assert.equal(call.options.method, 'DELETE')
+  assert.equal(call.url, '/api/636939444/gastos/31'); assert.equal(call.options.method, 'DELETE')
   globalThis.fetch = async () => json(404, { error: 'Gasto no encontrado', stage: 'delete_gasto', outcome_unknown: false })
   assert.deepEqual(await api.deleteExpense('1', 31), { ok: true, alreadyGone: true })
 })

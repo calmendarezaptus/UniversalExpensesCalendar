@@ -4,17 +4,17 @@ import { defineConfig, loadEnv } from "vite"
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
-  const timeEntryApi = (env.VITE_TIME_ENTRY_API_BASE_URL || 'https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services').replace(/\/$/, '')
+  const backendApi = (env.VITE_API_BASE_URL || 'https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services').replace(/\/$/, '') // mismo respaldo que src/lib/api.ts
   return {
     base: './',
     plugins: [react()],
     server: {
       // Mismo proxy que la captura: evita CORS en desarrollo.
       proxy: {
-        '/api/time-entry': {
-          target: timeEntryApi,
+        '/api': {
+          target: backendApi,
           changeOrigin: true,
-          rewrite: (requestPath: string) => requestPath.replace(/^\/api\/time-entry/, ''),
+          rewrite: (requestPath: string) => requestPath.replace(/^\/api/, ''),
         },
       },
     },
