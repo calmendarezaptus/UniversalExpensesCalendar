@@ -1,10 +1,8 @@
 import type { Expense } from '../types'
 
-// Función del proyecto Gastos: expense_services. Desarrollo usa el proxy de Vite (mismo origen).
-// TRANSITORIO: mientras no exista la URL de expense_services, el respaldo es time_entry_services,
-// que aún conserva las rutas de gastos. Reemplazar FALLBACK_API al desplegar la función nueva
-// (o definir VITE_API_BASE_URL en la Slate).
-const FALLBACK_API = 'https://timeentryforaptusfinancials-730085095.development.catalystserverless.com/server/time_entry_services'
+// Función del proyecto Gastos (ExpensesForAptusFinancials): expense_services.
+// Desarrollo usa el proxy de Vite (mismo origen); VITE_API_BASE_URL la reemplaza si se define.
+const FALLBACK_API = 'https://expensesforaptusfinancials-730085095.development.catalystserverless.com/server/expense_services'
 export const API_BASE = import.meta.env.DEV
   ? '/api'
   : (import.meta.env.VITE_API_BASE_URL || FALLBACK_API).replace(/\/$/, '')
